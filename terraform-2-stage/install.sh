@@ -5,7 +5,7 @@ set -e
 PROJECT_ID="${PROJECT_ID:-$(gcloud config get-value project)}"
 REGION="us-central1"
 # Cluster name is still needed for Layer 1 input
-CLUSTER_NAME="migration-demo-cluster"
+CLUSTER_NAME="raushankr-tf-cluster"
 
 echo "==================================================="
 echo "   GKE Migration Self-Serve Package Installer"

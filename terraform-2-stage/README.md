@@ -48,7 +48,7 @@ Add the backend configuration:
 ```hcl
 terraform {
   backend "gcs" {
-    bucket = "my-terraform-state"
+    bucket = "raushankr-gke-dev-gke-bucket"
     prefix = "infra"
   }
 }
@@ -59,7 +59,7 @@ Add the backend configuration:
 ```hcl
 terraform {
   backend "gcs" {
-    bucket = "my-terraform-state"
+    bucket = "raushankr-gke-dev-gke-bucket"
     prefix = "workloads"
   }
 }
