@@ -1,0 +1,43 @@
+apiVersion: autoscaling.x-k8s.io/v1beta1
+kind: ProvisioningRequest
+metadata:
+  name: ${PROVISIONING_REQUEST_NAME}
+  namespace: default
+spec:
+  provisioningClassName: queued-provisioning.gke.io
+  parameters:
+    maxRunDurationSeconds: "600"
+  podSets:
+  - count: ${COUNT}
+    podTemplateRef:
+      name: ${POD_TEMPLATE_NAME}
+---
+apiVersion: v1
+kind: PodTemplate
+metadata:
+  name: ${POD_TEMPLATE_NAME}
+  namespace: default
+  labels:
+    cloud.google.com/apply-warden-policies: "true"
+template:
+  spec:
+    nodeSelector:
+      cloud.google.com/gke-flex-start: "true"
+      cloud.google.com/gke-tpu-accelerator: ${TPU_TYPE}
+      cloud.google.com/gke-tpu-topology: ${TPU_TOPOLOGY}
+    tolerations:
+      - key: "google.com/tpu"
+        operator: "Exists"
+        effect: "NoSchedule"
+    containers:
+      - name: workload
+        image: ubuntu:latest
+        command: ["/bin/sh", "-c", "sleep 60"]
+        resources:
+          limits:
+            cpu: "1"
+            google.com/tpu: ${TPUS_PER_NODE}
+          requests:
+            cpu: "1"
+            google.com/tpu: ${TPUS_PER_NODE}
+    restartPolicy: Never

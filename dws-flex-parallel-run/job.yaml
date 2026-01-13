@@ -1,0 +1,26 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ${JOB_NAME}
+  namespace: default
+spec:
+  parallelism: ${COUNT}
+  completions: ${COUNT}
+  template:
+    metadata:
+      annotations:
+        autoscaling.x-k8s.io/consume-provisioning-request: ${PROVISIONING_REQUEST_NAME}
+        autoscaling.x-k8s.io/provisioning-class-name: "queued-provisioning.gke.io"
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: workload
+        image: ubuntu:latest
+        command: ["/bin/sh", "-c", "echo 'Running on provisioned TPU node'; sleep 60"]
+        resources:
+          limits:
+            cpu: "1"
+            google.com/tpu: ${TPUS_PER_NODE}
+          requests:
+            cpu: "1"
+            google.com/tpu: ${TPUS_PER_NODE}
