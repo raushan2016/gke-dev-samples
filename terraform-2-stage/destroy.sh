@@ -4,7 +4,7 @@ set -e
 # Configuration
 PROJECT_ID="${PROJECT_ID:-$(gcloud config get-value project)}"
 REGION="us-central1"
-CLUSTER_NAME="migration-demo-cluster"
+CLUSTER_NAME="raushankr-tf-cluster"
 
 echo "==================================================="
 echo "   GKE Migration Self-Serve Package Destructor"
